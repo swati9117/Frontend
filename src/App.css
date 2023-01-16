@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+.home-img{
+  max-width: 100%;
+  height: auto;
+  opacity: 0.8;
+}
+.home-text{
+  font-size: 3rem;
+  font-weight: 100;
+  transform: translate(-300px, -600px);
+}
