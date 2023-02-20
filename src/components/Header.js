@@ -35,16 +35,21 @@ const Header = () => {
                   Doctors
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/appointmentview">
+                  AppointmentView
+                </a>
+              </li>
               { sessionStorage.getItem("accessToken")&&<li class="nav-item">
                 <a class="nav-link" href="doctorRegister">
                   Doctors Register
                 </a>
               </li>}
-              {/* <li class="nav-item">
-                <a class="nav-link" href="#">
+               <li class="nav-item">
+                <a class="nav-link" href="/patientRegister">
                   Patient Register
                 </a>
-              </li> */}
+              </li> 
               { !sessionStorage.getItem("accessToken")&&<li class="nav-item">
                 <a class="nav-link" href="/login">Login</a>
               </li>}

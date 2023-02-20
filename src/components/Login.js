@@ -9,14 +9,15 @@ const Login = () => {
     const navigate = useNavigate();
 
     const login=()=>{
-        const data = { doctorEmail: email, doctorPassword:password}
-        axios.post("http://localhost:5001/doctors/login",data).then((response)=>{
+        const data = { email: email, password:password}
+        axios.post("http://localhost:8002/api/login/",data).then((response)=>{
             console.log(data)
             if (response.data.error) {
                 alert(response.data.error);
               } else {
-                sessionStorage.setItem("accessToken", response.data.accessToken);
-                navigate('/bookings',{state: {id: response.data.userDetails.doctorId ,name: response.data.userDetails.doctorName, specialization:response.data.userDetails.doctorSpecialization}})
+                console.log("swati",response.data)
+                sessionStorage.setItem("accessToken", response.data.jwt);
+                navigate('/bookings',{state: {id: response.data.userDetails.doctorId ,name: response.data.userDetails.doctorName, specialization:response.data.userDetails.doctorSpecialization,jwt:response.data.jwt}})
                 console.log(response.data)
               }
         })
@@ -25,11 +26,11 @@ const Login = () => {
     <div>
 
 <div class="mb-3 row mt-5">
-        <label for="doctorEmail" class="col-sm-2 col-form-label">
+        <label for="email" class="col-sm-2 col-form-label">
           Email
         </label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="doctorEmail" onChange={(event)=>{setEmail(event.target.value)}}/>
+          <input type="text" class="form-control" id="email" onChange={(event)=>{setEmail(event.target.value)}}/>
         </div>
       </div>
 
@@ -38,7 +39,7 @@ const Login = () => {
           Password
         </label>
         <div class="col-sm-10">
-          <input type="password" class="form-control" id="doctorPassword" onChange={(event)=>{setPassword(event.target.value)}}/>
+          <input type="password" class="form-control" id="password" onChange={(event)=>{setPassword(event.target.value)}}/>
         </div>
       </div>
 

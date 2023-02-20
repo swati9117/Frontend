@@ -3,62 +3,69 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';  
 import axios from 'axios'
-const Appointment = () => {
+import { useLocation } from 'react-router-dom'
 
-    const [name, setName] = useState("");
-    const [age, setAge] = useState("");
-    const [email, setEmail] = useState("");
-    const [mobile, setMobile] = useState("");
-    const [address, setAddress] = useState("");
-    const [disease, setDisease] = useState("");
-    const [date, setDate] = useState("");
-    const [time, setTime] = useState("");
+const Appointment = () => {
+  const location = useLocation();
+    const [id, setId] = useState(location.state.userDetails.patientId);
+    const [patientId, setPatientId] = useState(location.state.userDetails.patientId);
+    const [doctorId, setDoctorId] = useState(location.state.selectedDoctorDetails.id);
+    const [patientName, setPatientName] = useState(location.state.userDetails.patientName);
+    const [doctorName, setDoctorName] = useState("");
+    //const [email, setEmail] = useState("");
+    const [appointmentDate, setDate] = useState("");
+    const [appointment_slot, setTime] = useState("");
 
     const navigate = useNavigate();
     let { docId } = useParams();
 
     const [specificDoctor, setSpecificDoctor] = useState({});
     useEffect(()=>{
-        axios.get(`http://localhost:5001/doctors/byId/${docId}`).then((response)=>{
+      console.log("swa",location.state.selectedDoctorDetails)
+      
+        axios.get(`http://localhost:8001/Patient/${location.state.id}/appointment/`).then((response)=>{
             setSpecificDoctor(response.data)
         })
       },[])
-      const onSubmit = (data)=>{
-        axios.post("http://localhost:5001/appointments",{name: name, age:age, email: email, mobile:mobile, address:address, disease:disease, date:date, time:time ,doctorDoctorId:docId }).then((response)=>{
-            console.log("Submitted")
-            alert("Successfully Appointment Submitted!")
-            navigate('/')
-          })
-      }
+       const onSubmit = (data)=>{
+         axios.post("http://localhost:8001/appointment_details/",{id:id, patientId:patientId,doctorId:doctorId,patientName:patientName, doctorName:doctorName, appointmentDate:appointmentDate ,appointment_slot:appointment_slot }).then((response)=>{
+          
+             console.log("Submitted")
+             alert("Successfully Appointment Submitted!")
+             navigate('/')
+           })
+       }
   return (
     <div>
         <div className='specificDocForm'>
           <div className="formContainer">
-            <label>Name: </label>
-            <input type="text" id='inputAppointment' placeholder="Name" autoComplete="off" onChange={(event)=>{setName(event.target.value)}}/>
+          <label>Id: </label>
+            <input type="text" id='inputAppointment' placeholder="id" value = {location.state.userDetails.patientId}  autoComplete="off" onChange={(event)=>{setId(event.target.value)}}/>
 
-            <label>Age: </label>
-            <input type="text" id='inputAppointment' placeholder="Age" autoComplete="off" onChange={(event)=>{setAge(event.target.value)}}/>
+            <label>Patient Id: </label>
+            <input type="text" id='inputAppointment' placeholder="id" value = {location.state.userDetails.patientId}  autoComplete="off" onChange={(event)=>{setPatientId(event.target.value)}}/>
 
-            <label>Email: </label>
-            <input type="email" id='inputAppointment' placeholder="example@gmail.com" autoComplete="off" onChange={(event)=>{setEmail(event.target.value)}}/>
+            <label>Doctor Id: </label>
+            <input type="text" id='inputAppointment' placeholder="id"   autoComplete="off" onChange={(event)=>{setDoctorId(event.target.value)}}/>
+
+
+            <label>Patient Name: </label>
+            <input type="text" id='inputAppointment' placeholder="Patient Name" value = {location.state.userDetails.patientName}  autoComplete="off" onChange={(event)=>{setPatientName(event.target.value)}}/>
+
+            <label>Doctor Name: </label>
+            <input type="text" id='inputAppointment' placeholder="Doctor Name" value = {location.state.selectedDoctorDetails.doctorName} autoComplete="off" onChange={(event)=>{setDoctorName(event.target.value)}}/>
             
-            <label>Mobile: </label>
-            <input type="text" id='inputAppointment' placeholder="Mobile No." autoComplete="off" onChange={(event)=>{setMobile(event.target.value)}}/>
+            
 
-            <label>Address: </label>
-            <input type="text" id='inputAppointment' placeholder="Address" autoComplete="off" onChange={(event)=>{setAddress(event.target.value)}}/>
-
-            <label>Query: </label>
-            <input type="text" id='inputAppointment' placeholder="Disease" autoComplete="off" onChange={(event)=>{setDisease(event.target.value)}}/>
+            
 
             <label>Date: </label>
-            <input type="date" id='inputAppointment' className="form-control" name="dateTime" required onChange={(event)=>{setDate(event.target.value)}}/>
+            <input type="" id='inputAppointment' className="form-control" name="dateTime" required onChange={(event)=>{setDate(event.target.value)}}/>
 
-            <label>Time: </label>
-            <input type="time" id='inputAppointment' className="form-control" name="dateTime" required onChange={(event)=>{setTime(event.target.value)}}/>
+            <label>Slot: </label>
+            <input type="text" id='inputAppointment' className="form-control" name="dateTime" required onChange={(event)=>{setTime(event.target.value)}}/>
 
-            <button type="button" class="btn btn-primary" onClick={onSubmit}>submit</button>
+             <button type="button" class="btn btn-primary" onClick={onSubmit}>submit</button> 
           </div>
         </div>
     </div>

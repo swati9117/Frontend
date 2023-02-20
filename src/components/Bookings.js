@@ -10,7 +10,7 @@ const Bookings = () => {
   const [appointments, setAppointments] = useState()
 
   useEffect(()=>{
-    axios.get(`http://localhost:5001/appointments/${location.state.id}`).then((response)=>{
+    axios.get(`http://localhost:8001/Doctor/${location.state.id}/appointment/`).then((response)=>{
       console.log(response.data)
       setAppointments(response.data)
     })
@@ -24,25 +24,26 @@ const Bookings = () => {
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Age</th>
-      <th scope="col">Email</th>
-      <th scope="col">Patient's Request</th>
+      <th scope="col">Patient Id</th>
+      <th scope="col">Doctor Id</th>
+      <th scope="col">Patient Name</th>
+      <th scope="col">Doctor Name</th>
       <th scope="col">Date</th>
-      <th scope="col">Time</th>
+      <th scope="col">Slot</th>
     </tr>
   </thead>
   <tbody>
     { appointments&&appointments.map((value, key)=>{
         return(
             <tr>
-      <th scope="row">{value.appointmentId}</th>
-      <td>{value.name}</td>
-      <td>{value.age}</td>
-      <td>{value.email}</td>
-      <td>{value.disease}</td>
-      <td>{value.date}</td>
-      <td>{value.time}</td>
+      <th scope="row">{value.id}</th>
+      <td>{value.patientId}</td>
+      <td>{value.doctorId}</td>
+      <td>{value.patientName}</td>
+      <td>{value.doctorName}</td>
+      
+      <td>{value.appointmentDate}</td>
+      <td>{value.appointment_slot}</td>
     </tr>
         )
     })}
